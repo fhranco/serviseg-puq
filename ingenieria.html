@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INGENIERÍA TÉCNICA | SERVISEG PUQ</title>
+    
+    <!-- Fonts & GSAP -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --blue: #2B2EAA;
+            --blue-bright: #5558E3;
+            --dark: #05060F;
+            --dark2: #0A0C1E;
+            --white: #F0F2FF;
+            --gray: #7A82B0;
+            --gray-light: #A0AACC;
+            --nav-height: 80px;
+            --transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Essential Reset & HUD Overlay */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; cursor: none; }
+        body { background-color: var(--dark); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        
+        .noise { position: fixed; inset: 0; z-index: 10001; pointer-events: none; opacity: 0.04; background: url('https://grainy-gradients.vercel.app/noise.svg'); }
+        .vignette { position: fixed; inset: 0; z-index: 1000; pointer-events: none; background: radial-gradient(circle, transparent 50%, rgba(0,0,0,0.6) 100%); }
+
+        /* PERSISTENT TECH HUD LAYER */
+        .hud-layer { position: fixed; inset: 0; z-index: 9000; pointer-events: none; border: 40px solid transparent; }
+        .hud-label { position: absolute; top: 40px; left: 60px; display: flex; align-items: center; gap: 10px; color: var(--blue-bright); font-family: 'Rajdhani'; font-weight: 700; font-size: 11px; letter-spacing: 3px; }
+        .hud-scan { width: 40px; height: 1px; background: var(--blue-bright); position: absolute; top: 0; left: 0; animation: scan 4s linear infinite; box-shadow: 0 0 10px var(--blue-bright); }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+
+        .meta-data { position: absolute; bottom: 40px; left: 60px; font-family: 'Rajdhani'; font-size: 10px; color: var(--blue-bright); opacity: 0.4; line-height: 2; letter-spacing: 1px; text-transform: uppercase; }
+        .data-stream { position: absolute; bottom: 40px; right: 60px; font-family: 'Rajdhani'; font-size: 10px; color: var(--blue-bright); opacity: 0.4; text-align: right; }
+
+        .bracket { position: absolute; width: 40px; height: 40px; border-color: rgba(85,88,227,0.15); border-style: solid; }
+        .tl { top: -2px; left: -2px; border-width: 1px 0 0 1px; }
+        .tr { top: -2px; right: -2px; border-width: 1px 1px 0 0; }
+        .bl { bottom: -2px; left: -2px; border-width: 0 0 1px 1px; }
+        .br { bottom: -2px; right: -2px; border-width: 0 1px 1px 0; }
+
+        /* Cursor Tracking */
+        #dot { width: 4px; height: 4px; background: var(--blue-bright); position: fixed; z-index: 10001; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+        #ring { width: 34px; height: 34px; border: 1.5px solid rgba(85,88,227,0.3); position: fixed; z-index: 10000; border-radius: 50%; transform: translate(-50%, -50%); transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; box-shadow: 0 0 15px rgba(85,88,227,0.1); }
+        .coords { position: fixed; font-family: 'Rajdhani'; font-size: 8px; color: var(--blue-bright); opacity: 0.4; z-index: 10000; transform: translate(15px, 15px); pointer-events: none; white-space: nowrap; }
+
+        /* Typography & General */
+        h1, h2, h3, h4 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 3px; }
+        .raj { font-family: 'Rajdhani', sans-serif; text-transform: uppercase; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 60px; }
+        a { text-decoration: none; color: inherit; }
+
+        /* --- NAVIGATION --- */
+        .nav { position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-height); z-index: 2000; background: rgba(5, 6, 15, 0.5); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.03); transition: var(--transition); }
+        .nav.scrolled { background: rgba(5,6,15,0.95); height: 70px; border-bottom: 1px solid var(--blue-bright); }
+        .nav-wrap { height: 100%; display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+        .nav-links { display: flex; gap: 40px; font-family: 'Rajdhani'; font-weight: 700; font-size: 13px; letter-spacing: 2px; color: #FFFFFF; }
+        .nav-links a { opacity: 0.7; transition: 0.3s; }
+        .nav-links a:hover { color: var(--blue-bright); opacity: 1; }
+
+        /* --- HERO --- */
+        .hero { position: relative; height: 95vh; width: 100vw; display: flex; align-items: center; overflow: hidden; background: #000; }
+        .hero-img { position: absolute; inset: 0; z-index: 1; }
+        .hero-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
+        .hero-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--dark) 5%, transparent 50%), linear-gradient(0deg, var(--dark) 0%, transparent 30%); }
+        
+        .hero-body { position: relative; z-index: 100; padding: 0 100px; max-width: 1200px; }
+        .tagline { color: var(--blue-bright); font-family: 'Rajdhani'; letter-spacing: 6px; font-weight: 700; font-size: 14px; margin-bottom: 2rem; display: block; }
+        .title { font-size: 68px; line-height: 0.9; font-weight: 900; margin-bottom: 2.5rem; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .outline { -webkit-text-stroke: 1.5px var(--white); color: transparent; }
+        .btn { display: inline-block; padding: 22px 55px; background: var(--blue); color: white; font-family: 'Rajdhani'; font-weight: 700; letter-spacing: 3px; clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%); transition: var(--transition); border: none; }
+        .btn:hover { background: var(--blue-bright); transform: scale(1.05); box-shadow: 0 0 50px rgba(85,88,227,0.3); }
+
+        /* --- SECTIONS --- */
+        .sec { padding: 150px 0; position: relative; z-index: 100; border-top: 1px solid rgba(255,255,255,0.05); }
+        .sec-head { margin-bottom: 80px; }
+        .sec-tag { font-family: 'Rajdhani'; color: var(--blue-bright); font-weight: 700; letter-spacing: 5px; font-size: 13px; margin-bottom: 1.5rem; display: block; opacity: 0.8; }
+        .sec-title { font-size: 52px; margin-bottom: 40px; position: relative; }
+        .sec-title::before { content: ''; position: absolute; bottom: -15px; left: 0; width: 60px; height: 3px; background: var(--blue-bright); }
+
+        /* Services Grid */
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .card { background: rgba(15,18,40,0.4); padding: 60px; border: 1px solid rgba(255,255,255,0.03); transition: var(--transition); backdrop-filter: blur(10px); }
+        .card:hover { transform: translateY(-15px); border-color: var(--blue-bright); background: rgba(15,18,40,0.7); }
+        .card svg { width: 45px; height: 45px; margin-bottom: 30px; color: var(--blue-bright); filter: drop-shadow(0 0 10px var(--blue-mid)); }
+        .card h3 { font-size: 18px; margin-bottom: 25px; color: var(--white); }
+        .card .list li { font-size: 14px; color: var(--gray-light); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; list-style: none; }
+        .card .list li::before { content: ''; width: 6px; height: 6px; background: var(--blue-bright); opacity: 0.5; border-radius: 50%; flex-shrink: 0; }
+
+        /* Hitos Grid - 8 Elements */
+        .hito-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(255,255,255,0.05); }
+        .hito { background: var(--dark); padding: 60px 40px; text-align: center; transition: var(--transition); position: relative; overflow: hidden; }
+        .hito:hover { background: var(--dark2); }
+        .hito h4 { font-size: 12px; font-family: 'Rajdhani'; color: var(--gray-light); letter-spacing: 3px; opacity: 0.6; }
+        .hito:hover h4 { opacity: 1; color: var(--white); text-shadow: 0 0 15px var(--blue-bright); }
+        .hito-num { font-family: 'Orbitron'; font-size: 48px; position: absolute; top: 10%; left: 50%; transform: translateX(-50%); opacity: 0.02; transition: 0.5s; font-weight: 900; }
+        .hito:hover .hito-num { opacity: 0.08; top: 50%; transform: translate(-50%, -50%); }
+
+        /* Footer */
+        footer { padding: 120px 0; text-align: center; background: radial-gradient(circle at center, #0c0e22 0%, var(--dark) 100%); border-top: 1px solid rgba(255,255,255,0.05); }
+
+        /* LIGHT MODE OVERRIDES */
+        body.light { background-color: #F5F5F7; color: #1d1d1f; }
+        body.light .sec { background-color: #FFFFFF; border-top-color: rgba(0,0,0,0.05); }
+        body.light .sec-title { color: #1d1d1f; }
+        body.light .nav { background: rgba(255,255,255,0.7); border-bottom-color: rgba(0,0,0,0.1); }
+        body.light .nav-links { color: #1d1d1f; }
+        body.light .logo-img { filter: invert(0) !important; }
+        body.light .card { background: #FFFFFF; border-color: rgba(0,0,0,0.05); box-shadow: 0 15px 40px rgba(0,0,0,0.05); }
+        body.light .card h3 { color: #1d1d1f; }
+        body.light .hito { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.05); }
+        body.light .hito h4 { color: #1d1d1f; opacity: 0.8; }
+
+        .theme-toggle { position: fixed; bottom: 40px; right: 40px; z-index: 10000; width: 50px; height: 50px; background: rgba(5,6,15,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(10px); transition: 0.3s; color: white; }
+        body.light .theme-toggle { background: rgba(255,255,255,0.8); border-color: rgba(0,0,0,0.1); color: #1d1d1f; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        
+        @media (max-width: 1000px) {
+            .container { padding: 0 40px; }
+            .hero-body { padding: 0 40px; }
+            .title { font-size: 38px; }
+            .grid-3, .hito-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="noise"></div>
+    <div class="vignette"></div>
+    
+    <!-- THEME TOGGLE -->
+    <div class="theme-toggle" id="themeBtn">🌓</div>
+    
+    <!-- TECH HUD -->
+    <div class="hud-layer">
+        <div class="hud-label"><div class="hud-scan"></div><span>ENG_PROTOCOL // SYS_ACTIVE</span></div>
+        <div class="meta-data">
+            INFRASTRUCTURE: CRITICAL_STATUS<br>
+            NETWORK_LOAD: 42% / OPTIMIZED<br>
+            LOCATION: MAGALLANES_NODE
+        </div>
+        <div class="data-stream">
+            LATENCY: 12ms / UPTIME: 99.9%<br>
+            ENCRYPTION: QUANTUM_READY<br>
+            LOG_REF: ENG_2024_A4
+        </div>
+        <div class="bracket tl"></div><div class="bracket tr"></div><div class="bracket bl"></div><div class="bracket br"></div>
+    </div>
+
+    <!-- Cursor Tracking -->
+    <div id="dot"></div>
+    <div id="ring"></div>
+    <div class="coords" id="coords">TRK_X: 0000 / TRK_Y: 0000</div>
+
+    <nav class="nav" id="navbar">
+        <div class="container nav-wrap">
+            <div style="display: flex; gap: 30px; align-items: center; min-width: 300px;">
+                <a href="index.html" class="inicio-link" style="color: #FFFFFF; font-family: 'Orbitron'; font-size: 10px; font-weight: 700; text-decoration: none; opacity: 0.8;">← INICIO</a>
+                <a href="seguridad.html" class="division-link" style="color: #FFFFFF; font-family: 'Orbitron'; font-size: 10px; font-weight: 900; text-decoration: none; opacity: 0.9;">🛡️ SEGURIDAD</a>
+            </div>
+            <img src="logo.svg" class="logo-img" height="68" style="transform: translateX(-50%); position: absolute; left: 50%;">
+            <div class="nav-links" style="min-width: 300px; justify-content: flex-end;">
+                <a href="#soluciones">Soluciones</a>
+                <a href="#proyectos">Hitos</a>
+                <a href="#contacto">Contacto</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-img">
+            <img src="assets/engineering_hero.png" alt="Ingeniería Impacto">
+        </div>
+        <div class="hero-body reveal">
+            <span class="tagline">Infraestructura Tecnológica de Alto Nivel</span>
+            <h1 class="title">
+                <span>INGENIERÍA Y PROYECTOS</span>
+                <span class="outline raj">DE ALTA COMPLEJIDAD.</span>
+            </h1>
+            <a href="#contacto" class="btn">Solicitar Consultoría</a>
+        </div>
+    </header>
+
+    <section class="sec" id="soluciones">
+        <div class="container">
+            <div class="sec-head reveal">
+                <span class="sec-tag">Nuestras Capacidades</span>
+                <h2 class="sec-title">Soluciones Técnicas</h2>
+                <p style="margin-top:40px; font-size:18px; color:var(--gray-light); max-width:850px; font-weight:300;">Desarrollamos infraestructura crítica y sistemas inteligentes para diversas industrias en la región, garantizando la continuidad operativa y la excelencia tecnológica.</p>
+            </div>
+            
+            <div class="grid-3">
+                <div class="card reveal">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <h3>Sistemas de Energía</h3>
+                    <ul class="list">
+                        <li>Instalaciones de baja y alta tensión</li>
+                        <li>Proyectos de eficiencia energética</li>
+                        <li>Respaldo crítico (UPS y Generadores)</li>
+                        <li>Tableros de control automatizado</li>
+                    </ul>
+                </div>
+                <div class="card reveal">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                    <h3>Redes & Datos</h3>
+                    <ul class="list">
+                        <li>Instalación de Fibra Óptica aérea/subt.</li>
+                        <li>Infraestructura de Data Centers</li>
+                        <li>Cableado estructurado Cat 6/6A</li>
+                        <li>Redes inalámbricas de alta densidad</li>
+                    </ul>
+                </div>
+                <div class="card reveal">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A10.003 10.003 0 003 20c0-2.554 1.41-4.779 3.493-5.943m12.18.822a10.002 10.002 0 013.29 5.79m-1.82-1.93a10.003 10.003 0 01-3.174-7.534V4a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2h3"/></svg>
+                    <h3>Control & Automatización</h3>
+                    <ul class="list">
+                        <li>Sistemas SCADA e instrumentación</li>
+                        <li>Iluminación inteligente LED</li>
+                        <li>Control de acceso biométrico</li>
+                        <li>Monitoreo de activos críticos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hitos de Infraestructura - 8 Elements requested -->
+    <section class="sec" id="proyectos" style="background: var(--dark2);">
+        <div class="container">
+            <div class="sec-head reveal">
+                <span class="sec-tag">Historial Operativo</span>
+                <h2 class="sec-title">Infraestructura Crítica</h2>
+                <p style="margin-top:40px; font-size:16px; color:var(--gray-light);">Hitos operacionales donde hemos desplegado soluciones integrales de ingeniería en la región de Magallanes.</p>
+            </div>
+            
+            <div class="hito-grid reveal">
+                <div class="hito"><span class="hito-num">01</span><h4>MALL ESPACIO URBANO</h4></div>
+                <div class="hito"><span class="hito-num">02</span><h4>AEROPUERTO CARLOS IBAÑEZ</h4></div>
+                <div class="hito"><span class="hito-num">03</span><h4>BANCO ESTADO CENTRAL</h4></div>
+                <div class="hito"><span class="hito-num">04</span><h4>PLANTA GASCO MAGALLANES</h4></div>
+                <div class="hito"><span class="hito-num">05</span><h4>PUERTO ASMAR</h4></div>
+                <div class="hito"><span class="hito-num">06</span><h4>HOSPITAL CLÍNICO</h4></div>
+                <div class="hito"><span class="hito-num">07</span><h4>UNIVERSIDAD DE MAGALLANES</h4></div>
+                <div class="hito"><span class="hito-num">08</span><h4>CENTRAL ELÉCTRICA EDELMAG</h4></div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contacto">
+        <div class="container reveal">
+            <h2 style="font-size:32px; margin-bottom:30px;">Hablemos de tu próximo gran proyecto</h2>
+            <p style="margin:0 auto 40px; max-width:700px; color:var(--gray-light);">Nuestro equipo de ingenieros y especialistas está listo para diseñar soluciones que impulsen tu eficiencia operativa.</p>
+            <a href="mailto:adm.serviseg@gmail.com" class="btn">Contáctanos ahora</a>
+            <div style="margin-top:100px;">
+                <img src="logo.svg" height="52">
+                <p class="raj" style="font-size:10px; color:var(--gray); letter-spacing:3px; margin-top:20px;">© 2024 SERVISEG PUQ · INGENIERÍA & PROYECTOS</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // HUD Data Stream logic
+        const dot=document.getElementById('dot'), ring=document.getElementById('ring'), coords=document.getElementById('coords');
+        let mX=0, mY=0, rX=0, rY=0;
+        document.addEventListener('mousemove', e=>{
+            mX=e.clientX; mY=e.clientY;
+            dot.style.transform=`translate(${mX}px,${mY}px)`;
+            coords.style.transform=`translate(${mX}px,${mY}px)`;
+            coords.innerText = `X: ${mX.toString().padStart(4,'0')} / Y: ${mY.toString().padStart(4,'0')}`;
+        });
+        function move(){ rX+=(mX-rX)*0.15; rY+=(mY-rY)*0.15; ring.style.transform=`translate(${rX}px,${rY}px)`; requestAnimationFrame(move); }
+        move();
+
+        document.querySelectorAll('a, button, .card, .hito').forEach(el=>{
+            el.addEventListener('mouseenter', ()=>document.body.classList.add('active'));
+            el.addEventListener('mouseleave', ()=>document.body.classList.remove('active'));
+        });
+
+        // GSAP
+        gsap.registerPlugin(ScrollTrigger);
+        document.querySelectorAll('.reveal').forEach(el=>gsap.from(el, { scrollTrigger:{trigger:el, start:"top 90%"}, opacity: 0, y: 50, duration: 1.5, ease: "power2.out" }));
+        
+        ScrollTrigger.create({ trigger: "body", start: "top -50px", onEnter: ()=>document.getElementById('navbar').classList.add('scrolled'), onLeaveBack: ()=>document.getElementById('navbar').classList.remove('scrolled') });
+        
+        // Theme Toggle Logic
+        const themeBtn = document.getElementById('themeBtn');
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light');
+            const isLight = document.body.classList.contains('light');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            updateUI(isLight);
+        });
+        if(localStorage.getItem('theme') === 'light') { document.body.classList.add('light'); updateUI(true); }
+
+        function updateUI(light) {
+            const DivisionLink = document.querySelector('.division-link');
+            const InicioLink = document.querySelector('.inicio-link');
+            if(light) {
+                if(DivisionLink) DivisionLink.style.color = '#1d1d1f';
+                if(InicioLink) InicioLink.style.color = '#1d1d1f';
+            } else {
+                if(DivisionLink) DivisionLink.style.color = '#FFFFFF';
+                if(InicioLink) InicioLink.style.color = '#FFFFFF';
+            }
+        }
+    </script>
+</body>
+</html>

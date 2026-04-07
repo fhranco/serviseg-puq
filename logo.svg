@@ -1,0 +1,16 @@
+<svg width="600" height="150" viewBox="0 0 600 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Version for DARK BACKGROUNDS (All elements White) -->
+  <g transform="translate(10, 10)">
+    <path d="M60 0L111.96 30V90L60 120L8.03848 90V30L60 0Z" fill="white" />
+    <circle cx="60" cy="62" r="34" stroke="#2B2E83" stroke-width="4" />
+    <path d="M38 52H82" stroke="#2B2E83" stroke-width="7" stroke-linecap="round" />
+    <path d="M46 66H74" stroke="#2B2E83" stroke-width="7" stroke-linecap="round" />
+    <path d="M54 80H66" stroke="#2B2E83" stroke-width="6" stroke-linecap="round" />
+  </g>
+
+  <!-- SERVISEGPUQ Text in White -->
+  <text x="145" y="85" fill="white" style="font-family: Arial, sans-serif; font-weight: bold; font-size: 58px; letter-spacing: 2px;">SERVISEGPUQ</text>
+  
+  <!-- Slogan -->
+  <text x="145" y="115" fill="rgba(255,255,255,0.7)" style="font-family: Arial, sans-serif; font-weight: normal; font-size: 18px; letter-spacing: 1px;">Conectados y protegidos</text>
+</svg>

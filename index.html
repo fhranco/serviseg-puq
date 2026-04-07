@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERVISEG PUQ | INICIO - Gateway Corporativo</title>
+    
+    <!-- Fonts & GSAP -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <style>
+        :root {
+            --blue: #2B2EAA;
+            --blue-bright: #5558E3;
+            --dark: #05060F;
+            --white: #F0F2FF;
+        }
+
+        /* Reset */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; cursor: none; }
+        body { background-color: var(--dark); color: var(--white); font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; -webkit-font-smoothing: antialiased; }
+
+        /* CURSOR */
+        #dot { width: 4px; height: 4px; background: var(--blue-bright); position: fixed; z-index: 11000; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+        #ring { width: 34px; height: 34px; border: 1.5px solid rgba(85,88,227,0.3); position: fixed; z-index: 10999; border-radius: 50%; transform: translate(-50%, -50%); transition: all 0.2s ease-out; pointer-events: none; }
+
+        /* SPLIT SCREEN LANDING */
+        .gateway { display: flex; height: 100vh; overflow: hidden; background: #000; }
+        .world { position: relative; width: 50%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); filter: grayscale(1) brightness(0.6); text-decoration: none; border-right: 1px solid rgba(255,255,255,0.05); padding-bottom: 100px; }
+        .world:hover { width: 60%; filter: grayscale(0) brightness(1); }
+        .world:hover + .world { width: 40%; }
+        
+        .bg-img { position: absolute; inset: 0; z-index: 1; transition: 1s transform ease; transform: scale(1.1); }
+        .bg-img img { width: 100%; height: 100%; object-fit: cover; }
+        .bg-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(5,6,15,0.95) 15%, transparent 60%); }
+        .world:hover .bg-img { transform: scale(1); }
+
+        .world-content { position: relative; z-index: 10; text-align: center; }
+        .world-tag { font-family: 'Rajdhani'; color: var(--blue-bright); font-weight: 700; font-size: 11px; letter-spacing: 6px; margin-bottom: 1.5rem; display: block; opacity: 0.6; }
+        .world h2 { font-family: 'Orbitron'; font-size: 42px; margin-bottom: 2.5rem; letter-spacing: 5px; color: #FFFFFF; transition: 0.5s; }
+        .world h2 span { display: block; opacity: 0.2; font-size: 14px; -webkit-text-stroke: 1px #FFFFFF; color: transparent; margin-bottom: 10px; }
+        
+        /* LIGHT THEME OVERRIDES */
+        body.light { background-color: #F5F5F7; color: #1d1d1f; }
+        body.light .gateway { background: #FFFFFF; }
+        body.light .world { filter: grayscale(0.2) brightness(1); border-right: 1px solid rgba(0,0,0,0.05); }
+        body.light .world h2 { color: #1d1d1f; }
+        body.light .world h2 span { -webkit-text-stroke: 1px #1d1d1f; }
+        body.light .bg-img::after { background: linear-gradient(0deg, rgba(255,255,255,0.9) 10%, transparent 60%); }
+        body.light .logo-box { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.05); }
+
+        /* THEME TOGGLE BUTTON */
+        .theme-toggle { position: fixed; bottom: 40px; right: 40px; z-index: 10000; width: 50px; height: 50px; background: rgba(5,6,15,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(10px); transition: 0.3s; color: white; }
+        body.light .theme-toggle { background: rgba(255,255,255,0.8); border-color: rgba(0,0,0,0.1); color: #1d1d1f; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .theme-toggle:hover { transform: scale(1.1) rotate(15deg); }
+        
+        .btn-enter { padding: 18px 45px; background: rgba(255,255,255,0.1); color: var(--white); font-family: 'Rajdhani'; font-weight: 700; letter-spacing: 3px; border: 1px solid rgba(255,255,255,0.2); border-radius: 40px; text-transform: uppercase; transition: 0.3s; opacity: 0; transform: translateY(20px); backdrop-filter: blur(10px); }
+        .world:hover .btn-enter { opacity: 1; transform: translateY(0); background: var(--blue); border-color: var(--blue-bright); }
+
+        /* DARK MENU (Top Center) */
+        .header-top { position: fixed; top: 0; left: 0; width: 100%; height: 120px; z-index: 1000; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+        .logo-box { padding: 25px 50px; background: rgba(5, 6, 15, 0.5); backdrop-filter: blur(20px); border-radius: 0 0 30px 30px; border: 1px solid rgba(255,255,255,0.05); border-top: none; }
+        .logo-box img { height: 74px; }
+
+    </style>
+</head>
+<body>
+
+    <!-- THEME TOGGLE -->
+    <div class="theme-toggle" id="themeBtn">🌓</div>
+
+    <!-- CURSOR -->
+    <div id="dot"></div>
+    <div id="ring"></div>
+
+    <div class="header-top">
+        <div class="logo-box"><img src="logo.svg"></div>
+    </div>
+
+    <div class="gateway">
+        <!-- Ingeniería -->
+        <a href="ingenieria.html" class="world ibe">
+            <div class="bg-img"><img src="assets/engineering_hero.png"></div>
+            <div class="world-content">
+                <span class="world-tag">TECHNICAL SYSTEMS</span>
+                <h2><span>DIVISIÓN</span>INGENIERÍA</h2>
+                <div class="btn-enter">Ingresar</div>
+            </div>
+        </a>
+
+        <!-- Seguridad -->
+        <a href="seguridad.html" class="world sbe">
+            <div class="bg-img"><img src="assets/security_hero.png"></div>
+            <div class="world-content">
+                <span class="world-tag">PROTECTION OPERATIONS</span>
+                <h2><span>FUERZAS DE</span>SEGURIDAD</h2>
+                <div class="btn-enter">Ingresar</div>
+            </div>
+        </a>
+    </div>
+
+    <script>
+        const dot=document.getElementById('dot'), ring=document.getElementById('ring');
+        let mX=0, mY=0, rX=0, rY=0;
+        document.querySelectorAll('.world').forEach(el=>{
+            el.addEventListener('mouseenter', ()=>document.body.classList.add('active'));
+            el.addEventListener('mouseleave', ()=>document.body.classList.remove('active'));
+        });
+
+        // Theme Toggle Logic
+        const themeBtn = document.getElementById('themeBtn');
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light');
+            const isLight = document.body.classList.contains('light');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+        if(localStorage.getItem('theme') === 'light') document.body.classList.add('light');
+
+        document.addEventListener('mousemove', e=>{ mX=e.clientX; mY=e.clientY; dot.style.transform=`translate(${mX}px,${mY}px)`; });
+        function move(){ rX+=(mX-rX)*0.15; rY+=(mY-rY)*0.15; ring.style.transform=`translate(${rX}px,${rY}px)`; requestAnimationFrame(move); }
+        move();
+    </script>
+
+</body>
+</html>
