@@ -14,6 +14,7 @@
         :root {
             --blue: #2B2EAA;
             --blue-bright: #5558E3;
+            --blue-light: #A0A4FF;
             --dark: #05060F;
             --dark2: #0A0C1E;
             --white: #F0F2FF;
@@ -126,11 +127,12 @@
             #dot, #ring, .vignette, .coords, .hud-layer { display: none !important; }
             
             .container { padding: 0 25px; }
-            .nav { height: 70px; background: rgba(5,6,15,0.95); }
-            .nav-wrap { padding: 0 20px; justify-content: space-between; position: relative; }
-            .logo-img { left: 50% !important; transform: translateX(-50%) !important; height: 35px !important; }
+            .nav { height: 100px; background: rgba(5,6,15,0.98); }
+            .nav-wrap { flex-direction: column; justify-content: center; gap: 10px; padding: 10px 0; }
+            .logo-img { position: relative !important; left: auto !important; transform: none !important; height: 32px !important; margin-bottom: 5px; }
             
-            .inicio-link, .division-link { font-size: 11px !important; white-space: nowrap; }
+            .nav-wrap > div:first-child { min-width: auto !important; width: 100%; justify-content: center !important; display: flex !important; gap: 20px !important; }
+            .inicio-link, .division-link { font-size: 15px !important; font-weight: 700; opacity: 1 !important; color: var(--blue-bright) !important; }
             .nav-links { display: none; }
 
             .hero { height: auto; padding: 120px 0 80px; }
