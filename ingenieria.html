@@ -120,13 +120,36 @@
         .theme-toggle { position: fixed; bottom: 40px; right: 40px; z-index: 10000; width: 50px; height: 50px; background: rgba(5,6,15,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(10px); transition: 0.3s; color: white; }
         body.light .theme-toggle { background: rgba(255,255,255,0.8); border-color: rgba(0,0,0,0.1); color: #1d1d1f; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         
-        @media (max-width: 1000px) {
-            .container { padding: 0 40px; }
-            .hero-body { padding: 0 40px; }
-            .title { font-size: 38px; }
-            .grid-3, .hito-grid { grid-template-columns: 1fr; }
+        /* MOBILE RESPONSIVITY */
+        @media (max-width: 800px) {
+            *, *::before, *::after { cursor: auto !important; }
+            #dot, #ring, .vignette, .coords, .hud-layer { display: none !important; }
+            
+            .container { padding: 0 25px; }
+            .nav { height: 70px; background: rgba(5,6,15,0.95); }
+            .nav-wrap { padding: 0 20px; justify-content: space-between; position: relative; }
+            .logo-img { left: 50% !important; transform: translateX(-50%) !important; height: 35px !important; }
+            
+            .inicio-link, .division-link { font-size: 11px !important; white-space: nowrap; }
             .nav-links { display: none; }
+
+            .hero { height: auto; padding: 120px 0 80px; }
+            .hero-body { padding: 0 25px; }
+            .title { font-size: 32px !important; line-height: 1.1; margin-bottom: 2rem; }
+            .tagline { font-size: 11px; letter-spacing: 3px; }
+            .btn { width: 100%; text-align: center; padding: 18px 20px; font-size: 14px; clip-path: none; border-radius: 4px; }
+
+            .sec { padding: 80px 0; }
+            .sec-title { font-size: 32px; }
+            .grid-3, .hito-grid { grid-template-columns: 1fr; gap: 20px; }
+            
+            .card { padding: 40px 25px; }
+            .hito { padding: 40px 20px; }
+
+            footer { padding: 80px 0; }
+            footer h2 { font-size: 26px !important; }
         }
+
     </style>
 </head>
 <body>

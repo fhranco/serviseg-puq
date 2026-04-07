@@ -58,10 +58,29 @@
         .btn-enter { padding: 18px 45px; background: rgba(255,255,255,0.1); color: var(--white); font-family: 'Rajdhani'; font-weight: 700; letter-spacing: 3px; border: 1px solid rgba(255,255,255,0.2); border-radius: 40px; text-transform: uppercase; transition: 0.3s; opacity: 0; transform: translateY(20px); backdrop-filter: blur(10px); }
         .world:hover .btn-enter { opacity: 1; transform: translateY(0); background: var(--blue); border-color: var(--blue-bright); }
 
-        /* DARK MENU (Top Center) */
+        /* MOBILE RESPONSIVITY */
+        @media (max-width: 800px) {
+            *, *::before, *::after { cursor: auto !important; }
+            #dot, #ring { display: none !important; }
+            .gateway { flex-direction: column; height: auto; min-height: 100vh; }
+            .world { width: 100% !important; height: 50vh; padding-bottom: 40px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); filter: grayscale(0) brightness(1); }
+            .world:hover { width: 100%; height: 55vh; }
+            .world-content { padding: 0 20px; }
+            .world h2 { font-size: 28px; letter-spacing: 3px; margin-bottom: 1.5rem; }
+            .world-tag { font-size: 10px; letter-spacing: 4px; opacity: 1; }
+            .btn-enter { opacity: 1; transform: translateY(0); padding: 14px 35px; font-size: 12px; border-color: var(--blue-bright); background: rgba(43,46,170,0.5); }
+        }
+
+        /* HEADER & LOGO */
         .header-top { position: fixed; top: 0; left: 0; width: 100%; height: 120px; z-index: 1000; display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .logo-box { padding: 25px 50px; background: rgba(5, 6, 15, 0.5); backdrop-filter: blur(20px); border-radius: 0 0 30px 30px; border: 1px solid rgba(255,255,255,0.05); border-top: none; }
         .logo-box img { height: 74px; }
+
+        @media (max-width: 800px) {
+            .header-top { height: 120px; }
+            .logo-box { padding: 10px 20px; border-radius: 0 0 15px 15px; width: 100%; display: flex; justify-content: center; background: rgba(5,6,15,0.9); }
+            .logo-box img { height: 40px; }
+        }
 
     </style>
 </head>
