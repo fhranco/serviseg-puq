@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gracias | SERVISEGPUQ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue: #2B2EAA;
+            --blue-bright: #5558E3;
+            --dark: #05060F;
+            --white: #F0F2FF;
+        }
+        body {
+            background: var(--dark);
+            color: var(--white);
+            font-family: 'Rajdhani', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            padding: 40px;
+            border: 1px solid rgba(85,88,227,0.1);
+            background: rgba(10,12,30,0.5);
+            backdrop-filter: blur(20px);
+            max-width: 500px;
+        }
+        h1 {
+            font-family: 'Orbitron';
+            font-size: 24px;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+            color: var(--blue-bright);
+        }
+        p {
+            font-size: 18px;
+            opacity: 0.8;
+            margin-bottom: 40px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: var(--blue);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 2px;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: var(--blue-bright);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>¡MENSAJE RECIBIDO!</h1>
+        <p>Gracias por contactar con SERVISEGPUQ. Hemos recibido su requerimiento y le hemos enviado una confirmación a su correo. Nos pondremos en contacto con usted a la brevedad.</p>
+        <a href="index.html" class="btn">VOLVER AL INICIO</a>
+    </div>
+</body>
+</html>
