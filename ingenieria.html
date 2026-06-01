@@ -84,6 +84,103 @@
         .hito-num { font-family: 'Orbitron'; font-size: 48px; position: absolute; top: 10%; left: 50%; transform: translateX(-50%); opacity: 0.02; transition: 0.5s; font-weight: 900; }
         .hito:hover .hito-num { opacity: 0.08; top: 50%; transform: translate(-50%, -50%); }
 
+        /* Clients Carousel (4 items in view) */
+        .ing-carousel-wrap {
+            container-type: inline-size;
+            width: 100%;
+            overflow: hidden;
+            background: rgba(10,12,30,0.3);
+            border: 1px solid rgba(255,255,255,0.03);
+            padding: 20px 0;
+            position: relative;
+        }
+        .ing-carousel-track {
+            display: flex;
+            width: max-content;
+            animation: scroll-ing 25s linear infinite;
+        }
+        .ing-carousel-track:hover {
+            animation-play-state: paused;
+        }
+        .ing-client-card {
+            width: 25cqw; /* exactly 25% of the container inline-size */
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            padding: 0 10px;
+        }
+        .ing-client-content {
+            background: var(--dark);
+            border: 1px solid rgba(85,88,227,0.1);
+            padding: 50px 30px;
+            width: 100%;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .ing-client-content:hover {
+            background: var(--dark2);
+            border-color: var(--blue-bright);
+        }
+        .ing-client-content h4 {
+            font-family: 'Rajdhani';
+            font-size: 13px;
+            color: var(--white);
+            letter-spacing: 2px;
+            opacity: 0.6;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+        .ing-client-content:hover h4 {
+            opacity: 1;
+            text-shadow: 0 0 15px var(--blue-bright);
+        }
+        .ing-client-num {
+            font-family: 'Orbitron';
+            font-size: 32px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.02;
+            transition: 0.5s;
+            font-weight: 900;
+        }
+        .ing-client-content:hover .ing-client-num {
+            opacity: 0.08;
+        }
+
+        /* Light Mode for Client Carousel */
+        body.light .ing-client-content {
+            background: #FFFFFF;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        body.light .ing-client-content h4 {
+            color: #1d1d1f;
+            opacity: 0.8;
+        }
+
+        /* Responsiveness inside container queries */
+        @container (max-width: 1000px) {
+            .ing-client-card {
+                width: 50cqw; /* 2 in view */
+            }
+        }
+        @container (max-width: 600px) {
+            .ing-client-card {
+                width: 100cqw; /* 1 in view */
+            }
+        }
+
+        @keyframes scroll-ing {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
         /* Footer */
         footer { padding: 120px 0; text-align: center; background: radial-gradient(circle at center, #0c0e22 0%, var(--dark) 100%); border-top: 1px solid rgba(255,255,255,0.05); }
 
@@ -220,7 +317,7 @@
 
     <header class="hero">
         <div class="hero-img">
-            <img src="assets/engineering_hero.png" alt="Ingeniería Impacto">
+            <img src="assets/cctv_hero_public.png" alt="Ingeniería Impacto">
         </div>
         <div class="hero-body reveal">
             <span class="tagline">Soluciones Técnicas para tu Empresa y Comunidad</span>
@@ -275,24 +372,61 @@
         </div>
     </section>
 
-    <!-- Hitos de Infraestructura - 8 Elements requested -->
+    <!-- Hitos de Infraestructura - Experiencia Local -->
     <section class="sec" id="proyectos" style="background: var(--dark2);">
         <div class="container">
             <div class="sec-head reveal">
                 <span class="sec-tag">Historial de Trabajo</span>
                 <h2 class="sec-title">Experiencia Local</h2>
-                <p style="margin-top:40px; font-size:16px; color:var(--gray-light);">Hemos tenido la oportunidad de trabajar en diversos proyectos e instituciones de la región de Magallanes, brindando soluciones técnicas y de vigilancia responsables.</p>
+                <p style="margin-top:40px; font-size:16px; color:var(--gray-light);">Hemos tenido la oportunidad de brindar servicios y ejecutar proyectos en las principales comunas y con destacadas instituciones de la Región de Magallanes.</p>
             </div>
             
-            <div class="hito-grid reveal">
-                <div class="hito"><span class="hito-num">01</span><h4>MALL ESPACIO URBANO</h4></div>
-                <div class="hito"><span class="hito-num">02</span><h4>AEROPUERTO CARLOS IBAÑEZ</h4></div>
-                <div class="hito"><span class="hito-num">03</span><h4>BANCO ESTADO CENTRAL</h4></div>
-                <div class="hito"><span class="hito-num">04</span><h4>PLANTA GASCO MAGALLANES</h4></div>
-                <div class="hito"><span class="hito-num">05</span><h4>PUERTO ASMAR</h4></div>
-                <div class="hito"><span class="hito-num">06</span><h4>HOSPITAL CLÍNICO</h4></div>
-                <div class="hito"><span class="hito-num">07</span><h4>UNIVERSIDAD DE MAGALLANES</h4></div>
-                <div class="hito"><span class="hito-num">08</span><h4>CENTRAL ELÉCTRICA EDELMAG</h4></div>
+            <!-- Cobertura Territorial -->
+            <h3 class="sec-tag reveal" style="margin-bottom: 30px; letter-spacing: 3px; font-size: 16px;">📍 Cobertura Territorial</h3>
+            <div class="ing-carousel-wrap reveal" style="margin-bottom: 60px;">
+                <div class="ing-carousel-track">
+                    <!-- Set 1 -->
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">PA</span><h4>PUNTA ARENAS</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">PW</span><h4>PUERTO WILLIAMS</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">PN</span><h4>PUERTO NATALES</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">PV</span><h4>PORVENIR</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">PR</span><h4>PRIMAVERA</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">SG</span><h4>SAN GREGORIO / TEHUELCHES</h4></div></div>
+                    <!-- Set 2 (Duplicate for infinite loop) -->
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">PA</span><h4>PUNTA ARENAS</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">PW</span><h4>PUERTO WILLIAMS</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">PN</span><h4>PUERTO NATALES</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">PV</span><h4>PORVENIR</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">PR</span><h4>PRIMAVERA</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">SG</span><h4>SAN GREGORIO / TEHUELCHES</h4></div></div>
+                </div>
+            </div>
+
+            <!-- Clientes e Instituciones -->
+            <h3 class="sec-tag reveal" style="margin-bottom: 30px; letter-spacing: 3px; font-size: 16px;">🏢 Clientes e Instituciones</h3>
+            <div class="ing-carousel-wrap reveal">
+                <div class="ing-carousel-track">
+                    <!-- Set 1 -->
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">01</span><h4>CASINO DREAMS</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">02</span><h4>CCU</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">03</span><h4>ENAP</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">04</span><h4>ESPACIO URBANO</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">05</span><h4>ZONA FRANCA</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">06</span><h4>PODER JUDICIAL</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">07</span><h4>FISCALÍA</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">08</span><h4>EJÉRCITO DE CHILE</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">09</span><h4>CARABINEROS DE CHILE</h4></div></div>
+                    <!-- Set 2 (Duplicate for infinite loop) -->
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">01</span><h4>CASINO DREAMS</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">02</span><h4>CCU</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">03</span><h4>ENAP</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">04</span><h4>ESPACIO URBANO</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">05</span><h4>ZONA FRANCA</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">06</span><h4>PODER JUDICIAL</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">07</span><h4>FISCALÍA</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">08</span><h4>EJÉRCITO DE CHILE</h4></div></div>
+                    <div class="ing-client-card"><div class="ing-client-content"><span class="ing-client-num">09</span><h4>CARABINEROS DE CHILE</h4></div></div>
+                </div>
             </div>
         </div>
     </section>
@@ -325,7 +459,9 @@
                 <!-- Configuración de FormSubmit -->
                 <input type="hidden" name="_subject" value="Nuevo Proyecto de Ingeniería - SERVISEGPUQ">
                 <input type="hidden" name="_template" value="table">
-                <input type="hidden" name="_next" value="https://servisegpuq.cl/gracias.html">
+                <input type="hidden" name="_next" value="/gracias.html">
+                <input type="hidden" name="_autoresponse" value="Hola, hemos recibido tu consulta sobre proyectos y soluciones de ingeniería en SERVISEGPUQ. Un especialista técnico se pondrá en contacto contigo a la brevedad para evaluar tu requerimiento. Gracias por tu confianza.">
+                <input type="text" name="_honey" style="display:none">
 
                 <div class="form-group">
                     <label>Nombre Completo</label>
