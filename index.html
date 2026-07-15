@@ -232,6 +232,7 @@
         const audioIcon = document.getElementById('audioIcon');
         const audioText = document.getElementById('audioText');
         const worlds = document.querySelectorAll('.world');
+        const headerTop = document.querySelector('.header-top');
 
         // Initial state for entrance animation if video is playing
         const hasSeenIntro = sessionStorage.getItem('introSeen') === 'true';
@@ -241,6 +242,7 @@
         } else {
             // Hide main content initially to make entrance cleaner
             gsap.set(worlds, { opacity: 0, scale: 1.05 });
+            gsap.set(headerTop, { opacity: 0, y: -20 });
             
             // Try to autoplay with audio active first
             introVideo.muted = false;
@@ -268,6 +270,15 @@
                     stagger: 0.3,
                     ease: "power4.out",
                     delay: 0.2
+                });
+
+                // GSAP Entrance for the header/logo
+                gsap.to(headerTop, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.2,
+                    ease: "power3.out",
+                    delay: 0.8
                 });
 
                 setTimeout(() => {
